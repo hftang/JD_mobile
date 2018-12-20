@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        div {
+            width: 300px;
+            height: 300px;
+            background-color: yellow;
+        }
+    </style>
+</head>
+<body>
+
+<div></div>
+
+<script>
+
+    window.onload = function (ev) {
+
+        var bindTipEvent = function (dom, callBack) {
+
+            var isMove = false;
+            var startTime = 0;
+
+            dom.addEventListener('touchstart', function (e) {
+                startTime = Date.now();
+                // console.log('touchstart');
+            });
+            dom.addEventListener('touchmove', function (e) {
+                isMove = true;
+                // console.log('touchmove');
+            });
+            dom.addEventListener('touchend', function (e) {
+                // console.log('touchend');
+                if ((Date.now() - startTime) < 150 && !isMove) {
+                    callBack && callBack.call(this, e);
+                }
+            });
+
+            dom.addEventListener('click', function (e) {
+                // console.log('click');
+            });
+
+        };
+
+        bindTipEvent(document.querySelector("div"), function (e) {
+
+            console.log(this);
+            console.log(e);
+
+        });
+
+    }
+
+
+</script>
+
+</body>
+</html>

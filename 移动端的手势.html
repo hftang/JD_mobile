@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        div {
+            width: 200px;
+            height: 200px;
+            background-color: red;
+        }
+    </style>
+</head>
+<body>
+
+<div>
+
+</div>
+
+<script>
+    window.onload = function (ev) {
+
+        /*传入一个dom 传入2个回调函数*/
+
+        var bindSwipeEvent = function (dom, leftCallBack, rightCallBack) {
+
+            var isMove = false;
+            var startX = 0;
+            var distanceX = 0;
+
+            dom.addEventListener("touchstart", function (e) {
+
+                startX = e.targetTouches[0].clientX;
+            });
+
+            dom.addEventListener('touchmove', function (e) {
+                isMove = true;
+                var moveX = e.targetTouches[0].clientX;
+                distanceX = moveX - startX;
+            });
+
+            dom.addEventListener('touchend', function (e) {
+
+                if (isMove && Math.abs(distanceX) > 50) {
+                    /*向右移动*/
+                    if (distanceX > 0) {
+                        rightCallBack && rightCallBack.call(this, e);
+                    }
+                    else if (distanceX < 0) {
+                        /*向左移动*/
+                        leftCallBack && leftCallBack.call(this, e);
+                    }
+                }
+
+            });
+
+            isMove = false;
+            startX = 0;
+            distanceX = 0;
+
+        }
+
+        bindSwipeEvent(document.querySelector("div"), function (e) {
+
+            console.log(this);
+            console.log(e);
+            console.log('左移动');
+
+        }, function (e) {
+            console.log(this);
+            console.log(e);
+            console.log('右移动');
+        });
+    }
+
+</script>
+
+</body>
+</html>
